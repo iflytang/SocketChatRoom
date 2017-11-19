@@ -1,0 +1,1 @@
+/usr/bin/cc  -g   CMakeFiles/ChatRoom.dir/Server.c.o CMakeFiles/ChatRoom.dir/Client.c.o CMakeFiles/ChatRoom.dir/Server_v2.c.o CMakeFiles/ChatRoom.dir/Client_v2.c.o  -o ChatRoom 

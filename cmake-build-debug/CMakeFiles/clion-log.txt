@@ -1,0 +1,4 @@
+/home/tsf/clion/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/tsf/CLionProjects/ChatRoom
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/tsf/CLionProjects/ChatRoom/cmake-build-debug
