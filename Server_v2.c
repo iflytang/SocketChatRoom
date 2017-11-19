@@ -56,15 +56,18 @@ int main(int argc, char *argv[])
 {
     int sockfd, clientfd; //file descriptor
     int sin_size, recvbytes;
+    char buf[MAXLINE] = {0};
+    char * read_addr, * write_addr;
+    char temp[MAXLINE] = {0};
 
     pid_t pid, ppid; //定义父子进程标记
-    char *buf, *read_addr, *write_addr, *temp; //需要用到的缓冲区
+//    char *buf, *read_addr, *write_addr, *temp; //需要用到的缓冲区
     struct sockaddr_in their_addr; //定义地址结构
 
     int shmid;
     shmid = create_shm(); // create shared memory
 
-    temp = (char *)malloc(255);
+//    temp = (char *)malloc(255);
     struct sockaddr_in my_addr;
     sockfd = socket(AF_INET, SOCK_STREAM, 0); //创建基于流套接字
     //bzero(&(my_addr.sin_zero),0);
@@ -114,7 +117,7 @@ int main(int argc, char *argv[])
 
         printf("accept from %s\n", address);
         send(clientfd, WELCOME, strlen(WELCOME), 0); //发送问候信息
-        buf = (char *)malloc(255);
+//        buf = (char *)malloc(255);
 
         ppid = fork(); //创建子进程
         if (ppid == 0) //子进程
@@ -174,7 +177,7 @@ int main(int argc, char *argv[])
         }
     }
     printf("------------------------------------\n");
-    free(buf);
+//    free(buf);
     close(sockfd);
     close(clientfd);
     return 0;
