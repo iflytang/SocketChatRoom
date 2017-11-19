@@ -52,28 +52,6 @@ int create_shm()
     return shmid;
 }
 
-//端口绑定函数。创建套接字，并绑定到指定端口
-int bindPort(unsigned short int port)
-{
-    int sockfd;
-    struct sockaddr_in my_addr;
-    sockfd = socket(AF_INET, SOCK_STREAM, 0); //创建基于流套接字
-    //bzero(&(my_addr.sin_zero),0);
-    bzero(&my_addr, sizeof(my_addr));
-    my_addr.sin_family = AF_INET; //IPV4协议族
-    my_addr.sin_port = htons(port); //转换端口为网络字节序
-    my_addr.sin_addr.s_addr = INADDR_ANY;
-
-    if (bind(sockfd, (struct sockaddr*)&my_addr, sizeof(struct sockaddr)) == -1)
-    {
-        perror("fail to bind");
-        exit(1);
-    }
-
-    printf("bind success!\n");
-    return sockfd;
-}
-
 int main(int argc, char *argv[])
 {
     int sockfd, clientfd; //file descriptor
@@ -87,7 +65,21 @@ int main(int argc, char *argv[])
     shmid = create_shm(); // create shared memory
 
     temp = (char *)malloc(255);
-    sockfd = bindPort(SOCKET_PORT); //绑定端口
+    struct sockaddr_in my_addr;
+    sockfd = socket(AF_INET, SOCK_STREAM, 0); //创建基于流套接字
+    //bzero(&(my_addr.sin_zero),0);
+    bzero(&my_addr, sizeof(my_addr));
+    my_addr.sin_family = AF_INET; //IPV4协议族
+    my_addr.sin_port = htons(SOCKET_PORT); //转换端口为网络字节序
+    my_addr.sin_addr.s_addr = INADDR_ANY;
+
+    if (bind(sockfd, (struct sockaddr*)&my_addr, sizeof(struct sockaddr)) == -1)
+    {
+        perror("fail to bind");
+        exit(1);
+    }
+
+    printf("bind success!\n");
 
     char * now = get_cur_time();
     printf("Time is : %s\n", now);
