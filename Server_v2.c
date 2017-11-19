@@ -1,54 +1,53 @@
-//-------------------------服务器端server.c-------------------------------//
+/**
+* Created by tsf on 17-11-18.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h> //数据类型定义
-#include <sys/stat.h> //文件属性
-#include <netinet/in.h> //定义数据结构sockaddr_in
-#include <sys/socket.h> //提供socket函数和数据结构
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
 #include <string.h>
 #include <unistd.h>
 #include <signal.h>
 #include <sys/ipc.h>
 #include <errno.h>
-#include <sys/shm.h> //共享内存
+#include <sys/shm.h>
 #include <time.h>
+#include <arpa/inet.h>
 
-#define PERM S_IRUSR | S_IWUSR //用户读写
-#define MYPORT  3490 //通信端口
-#define BACKLOG 10 //定义服务器段可以连接的最大客户数
-#define WELCOME "|---------------Welcome to the chat room!----------------|"//当客户端连接服务端时，向客户端发送此字符串
-//将int类型转换成char*类型
-void itoa(int i, char *string)
-{
-    int mask = 1;
-    while (i / mask >= 10)
-        mask *= 10;
-    while (mask > 0)
-    {
-        *string++ = i / mask + '0';
-        i %= mask;
-        mask /= 10;
-    }
-    *string = '\0';
+#define PERM S_IRUSR | S_IWUSR
+#define SOCKET_PORT  2017
+#define PENDING_QUEUE 15
+#define MAXLINE 1024
+#define WELCOME "|================ Chatting Room ===============|"
+
+
+// when interrupted, call this method
+void quit(int signal) {
+    printf("Socket teardowns!\n");
+    exit(EXIT_SUCCESS);
 }
 
-//得到当前系统的时间
-void get_cur_time(char *time_str)
+// get current time
+char * get_cur_time()
 {
-    struct timeval now;
-    gettimeofday(&now, NULL);
-    strcpy(time_str, ctime(&now.tv_sec));
+    time_t current_time;
+    current_time = time(&current_time);
+    char * now = ctime(&current_time);
+
+    return now;
 }
 
-//创建共享存储区
-int shm_create()
+// create shared memory
+int create_shm()
 {
     int shmid;
-    //shmid = shmget(IPC_PRIVATE, 1024, PERM);
     if ((shmid = shmget(IPC_PRIVATE, 1024, PERM)) == -1)
     {
-        fprintf(stderr, "Create Share Memory Error:%s\n\a", strerror(errno));
-        exit(1);
+        perror("create shared memory error!");
+        exit(EXIT_FAILURE);
     }
     return shmid;
 }
@@ -77,24 +76,23 @@ int bindPort(unsigned short int port)
 
 int main(int argc, char *argv[])
 {
-    int sockfd, clientfd; //监听套接字、客户套接字
+    int sockfd, clientfd; //file descriptor
     int sin_size, recvbytes;
 
     pid_t pid, ppid; //定义父子进程标记
-    char *buf, *read_addr, *write_addr, *temp, *time_str; //需要用到的缓冲区
+    char *buf, *read_addr, *write_addr, *temp; //需要用到的缓冲区
     struct sockaddr_in their_addr; //定义地址结构
-    int shmid;
 
-    shmid = shm_create(); //创建共享存储区
+    int shmid;
+    shmid = create_shm(); // create shared memory
 
     temp = (char *)malloc(255);
-    time_str = (char *)malloc(50);
-    sockfd = bindPort(MYPORT); //绑定端口
+    sockfd = bindPort(SOCKET_PORT); //绑定端口
 
-    get_cur_time(time_str);
-    printf("Time is : %s\n", time_str);
+    char * now = get_cur_time();
+    printf("Time is : %s\n", now);
 
-    if (listen(sockfd, BACKLOG) == -1)
+    if (listen(sockfd, PENDING_QUEUE) == -1)
     {
         //在指定端口上监听
         perror("fail to listen");
@@ -152,8 +150,8 @@ int main(int argc, char *argv[])
                     strncpy(write_addr, buf, 1024);
 
                     //把接收到的消息连接此刻的时间字符串输出到标准输出
-                    get_cur_time(time_str);
-                    strcat(buf, time_str);
+                    char * now = get_cur_time();
+                    strcat(buf, now);
                     printf("%s\n", buf);
                 }
                 else if (pid == 0)
@@ -167,8 +165,8 @@ int main(int argc, char *argv[])
                     {
                         strcpy(temp, read_addr); //更新temp，表示已经读取过该消息
 
-                        get_cur_time(time_str);
-                        strcat(read_addr, time_str);
+                        char * now = get_cur_time();
+                        strcat(read_addr, now);
                         if (send(clientfd, read_addr, strlen(read_addr), 0) == -1)
                         {
                             perror("fail to send");
