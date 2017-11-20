@@ -12,6 +12,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="85c23334-c2d2-489a-bb90-23c2d3bb6c76" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client_v2" afterPath="$PROJECT_DIR$/Client_v2" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server_v2" afterPath="$PROJECT_DIR$/Server_v2" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Client_v2.c" afterPath="$PROJECT_DIR$/Client_v2.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server_v2.c" afterPath="$PROJECT_DIR$/Server_v2.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -23,6 +26,26 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DockManager">
+    <window id="2">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file leaf-file-name="Client.c" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/Client.c">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="240">
+                    <caret line="54" column="5" lean-forward="true" selection-start-line="54" selection-start-column="5" selection-end-line="54" selection-end-column="5" />
+                    <folding>
+                      <element signature="e#38#56#0" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
     <window id="1">
       <content type="file-editors">
         <state>
@@ -30,8 +53,8 @@
             <file leaf-file-name="Server.c" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/Server.c">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="-260">
-                    <caret line="29" column="1" lean-forward="false" selection-start-line="29" selection-start-column="1" selection-end-line="29" selection-end-column="1" />
+                  <state relative-caret-position="200">
+                    <caret line="71" column="30" lean-forward="true" selection-start-line="71" selection-start-column="30" selection-end-line="71" selection-end-column="30" />
                     <folding>
                       <element signature="e#38#56#0" expanded="true" />
                     </folding>
@@ -57,11 +80,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Server_v2.c" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Server_v2.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server_v2.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="60" column="29" lean-forward="true" selection-start-line="60" selection-start-column="29" selection-end-line="60" selection-end-column="29" />
+            <state relative-caret-position="328">
+              <caret line="88" column="62" lean-forward="false" selection-start-line="88" selection-start-column="62" selection-end-line="88" selection-end-column="62" />
               <folding>
                 <element signature="e#38#56#0" expanded="true" />
               </folding>
@@ -79,23 +102,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Client_v2.c" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Client_v2.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Client_v2.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1540">
-              <caret line="86" column="1" lean-forward="false" selection-start-line="86" selection-start-column="1" selection-end-line="86" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Client.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="754">
-              <caret line="110" column="0" lean-forward="false" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
+            <state relative-caret-position="328">
+              <caret line="48" column="69" lean-forward="false" selection-start-line="48" selection-start-column="69" selection-end-line="48" selection-end-column="69" />
               <folding>
-                <element signature="e#38#56#0" expanded="true" />
+                <element signature="e#88#106#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -110,6 +123,10 @@
       <find>recvbytes</find>
       <find>read_addr</find>
       <find>temp</find>
+      <find>buf</find>
+      <find>their_addr</find>
+      <find>argv</find>
+      <find>my_addr</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -121,8 +138,8 @@
         <option value="$PROJECT_DIR$/cmake-build-debug/Server.c" />
         <option value="$PROJECT_DIR$/Client.c" />
         <option value="$PROJECT_DIR$/Server.c" />
-        <option value="$PROJECT_DIR$/Client_v2.c" />
         <option value="$PROJECT_DIR$/Server_v2.c" />
+        <option value="$PROJECT_DIR$/Client_v2.c" />
       </list>
     </option>
   </component>
@@ -403,12 +420,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1511004949064</updated>
-      <workItem from="1511004950541" duration="31131000" />
+      <workItem from="1511004950541" duration="33950000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31131000" />
+    <option name="totallyTimeSpent" value="33950000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1440" y="58" width="1440" height="860" extended-state="0" />
@@ -512,29 +529,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/include/unistd.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="352" column="11" lean-forward="false" selection-start-line="352" selection-start-column="11" selection-end-line="352" selection-end-column="11" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="754">
-          <caret line="110" column="0" lean-forward="false" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
-          <folding>
-            <element signature="e#38#56#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -546,18 +545,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client_v2.c">
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1540">
-          <caret line="86" column="1" lean-forward="false" selection-start-line="86" selection-start-column="1" selection-end-line="86" selection-end-column="1" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Server.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-260">
-          <caret line="29" column="1" lean-forward="false" selection-start-line="29" selection-start-column="1" selection-end-line="29" selection-end-column="1" />
+        <state relative-caret-position="200">
+          <caret line="71" column="30" lean-forward="true" selection-start-line="71" selection-start-column="30" selection-end-line="71" selection-end-column="30" />
           <folding>
             <element signature="e#38#56#0" expanded="true" />
           </folding>
@@ -566,10 +565,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server_v2.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="60" column="29" lean-forward="true" selection-start-line="60" selection-start-column="29" selection-end-line="60" selection-end-column="29" />
+        <state relative-caret-position="328">
+          <caret line="88" column="62" lean-forward="false" selection-start-line="88" selection-start-column="62" selection-end-line="88" selection-end-column="62" />
           <folding>
             <element signature="e#38#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="54" column="5" lean-forward="true" selection-start-line="54" selection-start-column="5" selection-end-line="54" selection-end-column="5" />
+          <folding>
+            <element signature="e#38#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client_v2.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="328">
+          <caret line="48" column="69" lean-forward="false" selection-start-line="48" selection-start-column="69" selection-end-line="48" selection-end-column="69" />
+          <folding>
+            <element signature="e#88#106#0" expanded="true" />
           </folding>
         </state>
       </provider>

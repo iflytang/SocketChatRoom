@@ -44,7 +44,7 @@ char * get_cur_time()
 int create_shm()
 {
     int shmid;
-    if ((shmid = shmget(IPC_PRIVATE, 1024, PERM)) == -1)
+    if ((shmid = shmget(IPC_PRIVATE, MAXLINE, PERM)) == -1)
     {
         perror("create shared memory error!");
         exit(EXIT_FAILURE);
@@ -59,24 +59,34 @@ int main(int argc, char *argv[])
     char buf[MAXLINE] = {0};
     char * read_addr, * write_addr;
     char temp[MAXLINE] = {0};
+    struct  sockaddr_in6 server, client;
+    char * server_addr = "::1"; // server's default ipv6 address
+    char * server_name = "tang"; // server's name when in communication
 
-    pid_t pid, ppid; //定义父子进程标记
-//    char *buf, *read_addr, *write_addr, *temp; //需要用到的缓冲区
-    struct sockaddr_in their_addr; //定义地址结构
+    pid_t pid, ppid;
+//    struct sockaddr_in their_addr; //定义地址结构
 
     int shmid;
     shmid = create_shm(); // create shared memory
 
-//    temp = (char *)malloc(255);
-    struct sockaddr_in my_addr;
-    sockfd = socket(AF_INET, SOCK_STREAM, 0); //创建基于流套接字
-    //bzero(&(my_addr.sin_zero),0);
-    bzero(&my_addr, sizeof(my_addr));
-    my_addr.sin_family = AF_INET; //IPV4协议族
-    my_addr.sin_port = htons(SOCKET_PORT); //转换端口为网络字节序
-    my_addr.sin_addr.s_addr = INADDR_ANY;
+    // read the server_addr and server_name from **agrv
+    if (argc != 3) {
+        perror("wrong input!\nusage:\n\t./x.o <IPv6 Address> <String name>\n");
+        exit(EXIT_FAILURE);
+    } else {
+        server_addr = argv[1];
+        server_name = argv[2];
+    }
 
-    if (bind(sockfd, (struct sockaddr*)&my_addr, sizeof(struct sockaddr)) == -1)
+//    struct sockaddr_in my_addr;
+    sockfd = socket(AF_INET6, SOCK_STREAM, 0); //创建基于流套接字
+    // give the socket a name
+    bzero(&server, sizeof(server));
+    server.sin6_family = AF_INET6;
+    server.sin6_port = htons(SOCKET_PORT);
+    inet_pton(AF_INET6, server_addr, &server.sin6_addr);
+
+    if (bind(sockfd, (struct sockaddr*) &server, sizeof(server)) == -1)
     {
         perror("fail to bind");
         exit(1);
@@ -105,7 +115,7 @@ int main(int argc, char *argv[])
         }
         */
         //接受一个客户端的连接请求
-        if ((clientfd = accept(sockfd, (struct sockaddr *)&their_addr, &sin_size)) == -1)
+        if ((clientfd = accept(sockfd, (struct sockaddr *)&client, &sin_size)) == -1)
         {
             perror("fail to accept");
             exit(1);
@@ -113,7 +123,7 @@ int main(int argc, char *argv[])
 
         //得到客户端的IP地址输出
         char address[20];
-        inet_ntop(AF_INET, &their_addr.sin_addr, address, sizeof(address));
+        inet_ntop(AF_INET, &client.sin6_addr, address, sizeof(address));
 
         printf("accept from %s\n", address);
         send(clientfd, WELCOME, strlen(WELCOME), 0); //发送问候信息

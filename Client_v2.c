@@ -9,37 +9,49 @@
 #include <unistd.h>
 #include <signal.h>
 #include <time.h>
+#include <arpa/inet.h>
+
+#define SOCKET_PORT  2017
+#define MAXLINE 1024
 
 int main(int argc, char *argv[])
 {
-    struct sockaddr_in clientaddr; //定义地址结构
+    struct sockaddr_in6 client;
     pid_t pid;
     int clientfd, sendbytes, recvbytes;
+    char * client_addr = "::1";
+    char * client_name = "rick";
+    char buf[MAXLINE] = {0};
+
     struct hostent *host; //主机信息数据结构
-    char *buf, *buf_read;
-    if (argc < 4)
-    {
-        printf("wrong usage");
-        printf("%s host port name\n", argv[0]);
-        exit(1);
+    char *buf_read;
+
+    // read the server_addr and server_name from **agrv
+    if (argc != 3) {
+        perror("wrong input!\nusage:\n\t./x.o <IPv6 Address> <String name>\n");
+        exit(EXIT_FAILURE);
+    } else {
+        client_addr = argv[1];
+        client_name = argv[2];
     }
-    host = gethostbyname(argv[1]);
-    if ((clientfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+
+
+    if ((clientfd = socket(AF_INET6, SOCK_STREAM, 0)) == -1)
     {
         perror("fail to create socket");
         exit(1);
     }
-    bzero(&clientaddr, sizeof(clientaddr));
-    clientaddr.sin_family = AF_INET;
-    clientaddr.sin_port = htons((uint16_t)atoi(argv[2]));
-    clientaddr.sin_addr = *((struct in_addr *)host->h_addr);
+    bzero(&client, sizeof(client));
+    client.sin6_family = AF_INET6;
+    client.sin6_port = htons(SOCKET_PORT);
+    inet_pton(AF_INET6, client_addr, &client.sin6_addr);
     //客户端连接服务端
-    if (connect(clientfd, (struct sockaddr *)&clientaddr, sizeof(struct sockaddr)) == -1)
+    if (connect(clientfd, (struct sockaddr *)&client, sizeof(client)) == -1)
     {
         perror("fail to connect");
         exit(1);
     }
-    buf = (char *)malloc(120);
+//    buf = (char *)malloc(120);
     memset(buf, 0, 120);
     buf_read = (char *)malloc(100);
 
@@ -55,7 +67,7 @@ int main(int argc, char *argv[])
         if (pid > 0)
         {
             //父进程发送消息
-            strcpy(buf, argv[3]);
+            strcpy(buf, argv[2]);
             strcat(buf, ":");
             memset(buf_read, 0, 100);
             fgets(buf_read, 100, stdin);
