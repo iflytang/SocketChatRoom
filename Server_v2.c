@@ -55,7 +55,7 @@ int create_shm()
 int main(int argc, char *argv[])
 {
     int sockfd, clientfd; //file descriptor
-    int sin_size, recvbytes;
+    int  recvbytes;
     char buf[MAXLINE] = {0};
     char * read_addr, * write_addr;
     char temp[MAXLINE] = {0};
@@ -64,10 +64,10 @@ int main(int argc, char *argv[])
     char * server_name = "tang"; // server's name when in communication
 
     pid_t pid, ppid;
-//    struct sockaddr_in their_addr; //定义地址结构
 
+    // create shared memory
     int shmid;
-    shmid = create_shm(); // create shared memory
+    shmid = create_shm();
 
     // read the server_addr and server_name from **agrv
     if (argc != 3) {
@@ -115,7 +115,8 @@ int main(int argc, char *argv[])
         }
         */
         //接受一个客户端的连接请求
-        if ((clientfd = accept(sockfd, (struct sockaddr *)&client, &sin_size)) == -1)
+        socklen_t client_len = sizeof(struct sockaddr);
+        if ((clientfd = accept(sockfd, (struct sockaddr *)&client, &client_len)) == -1)
         {
             perror("fail to accept");
             exit(1);
