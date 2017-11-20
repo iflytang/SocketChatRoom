@@ -78,42 +78,40 @@ int main(int argc, char *argv[])
         server_name = argv[2];
     }
 
-//    struct sockaddr_in my_addr;
-    sockfd = socket(AF_INET6, SOCK_STREAM, 0); //创建基于流套接字
+    // print log_in information
+    char * current_time = get_cur_time();     // get the current system time
+    printf("monitor %s login from %s at %s", server_name, server_addr, current_time);
+
+    // create and check a server socket
+    sockfd = socket(AF_INET6, SOCK_STREAM, 0);
+    if(sockfd < 0) {
+        perror("make_tcp_connection:: socket");
+        exit(EXIT_FAILURE);
+    }
+
     // give the socket a name
     bzero(&server, sizeof(server));
     server.sin6_family = AF_INET6;
     server.sin6_port = htons(SOCKET_PORT);
-    inet_pton(AF_INET6, server_addr, &server.sin6_addr);
+    inet_pton(AF_INET6, server_addr, &server.sin6_addr);  // assign argv[1]:ipv6 to server_addr
 
-    if (bind(sockfd, (struct sockaddr*) &server, sizeof(server)) == -1)
-    {
-        perror("fail to bind");
-        exit(1);
+    // bind socket
+    int bind_socket = bind(sockfd, (struct sockaddr *) &server, sizeof(server));
+    if(bind_socket < 0) {
+        perror("make_tcp_connection:: bind");
+        exit(EXIT_FAILURE);
     }
 
-    printf("bind success!\n");
-
-    char * now = get_cur_time();
-    printf("Time is : %s\n", now);
-
-    if (listen(sockfd, PENDING_QUEUE) == -1)
-    {
-        //在指定端口上监听
-        perror("fail to listen");
-        exit(1);
+    // listen socket
+    int listen_socket = listen(sockfd, PENDING_QUEUE);  // making it as server socket
+    if(listen_socket < 0) {
+        perror("make_tcp_connection:: listen");
+        exit(EXIT_FAILURE);
     }
+    printf("listening...\n|================ Chatting room monitor ===============|\n");
 
-    printf("listen....\n");
     while (1)
     {
-        /*
-        if (listen(sockfd, BACKLOG) == -1)
-        {
-            perror("fail to listen");
-            exit(1);
-        }
-        */
         //接受一个客户端的连接请求
         socklen_t client_len = sizeof(struct sockaddr);
         if ((clientfd = accept(sockfd, (struct sockaddr *)&client, &client_len)) == -1)

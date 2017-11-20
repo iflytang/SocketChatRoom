@@ -12,6 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="85c23334-c2d2-489a-bb90-23c2d3bb6c76" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server_v2" afterPath="$PROJECT_DIR$/Server_v2" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server_v2.c" afterPath="$PROJECT_DIR$/Server_v2.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -50,8 +51,8 @@
             <file leaf-file-name="Server.c" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/Server.c">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="520">
-                    <caret line="114" column="8" lean-forward="true" selection-start-line="114" selection-start-column="8" selection-end-line="114" selection-end-column="55" />
+                  <state relative-caret-position="500">
+                    <caret line="101" column="45" lean-forward="false" selection-start-line="101" selection-start-column="45" selection-end-line="101" selection-end-column="45" />
                     <folding>
                       <element signature="e#38#56#0" expanded="true" />
                     </folding>
@@ -80,8 +81,8 @@
       <file leaf-file-name="Server_v2.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Server_v2.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="57" column="8" lean-forward="false" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="8" />
+            <state relative-caret-position="225">
+              <caret line="113" column="5" lean-forward="false" selection-start-line="113" selection-start-column="5" selection-end-line="113" selection-end-column="5" />
               <folding>
                 <element signature="e#38#56#0" expanded="true" />
               </folding>
@@ -418,12 +419,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1511004949064</updated>
-      <workItem from="1511004950541" duration="34208000" />
+      <workItem from="1511004950541" duration="34634000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34208000" />
+    <option name="totallyTimeSpent" value="34634000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1440" y="58" width="1440" height="860" extended-state="0" />
@@ -573,8 +574,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="114" column="8" lean-forward="true" selection-start-line="114" selection-start-column="8" selection-end-line="114" selection-end-column="55" />
+        <state relative-caret-position="500">
+          <caret line="101" column="45" lean-forward="false" selection-start-line="101" selection-start-column="45" selection-end-line="101" selection-end-column="45" />
           <folding>
             <element signature="e#38#56#0" expanded="true" />
           </folding>
@@ -583,8 +584,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server_v2.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="57" column="8" lean-forward="false" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="8" />
+        <state relative-caret-position="225">
+          <caret line="113" column="5" lean-forward="false" selection-start-line="113" selection-start-column="5" selection-end-line="113" selection-end-column="5" />
           <folding>
             <element signature="e#38#56#0" expanded="true" />
           </folding>
