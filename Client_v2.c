@@ -25,8 +25,7 @@ void quit(int signal) {
 }
 
 // get current time
-char * get_cur_time()
-{
+char * get_cur_time() {
     time_t current_time;
     current_time = time(&current_time);
     char * now = ctime(&current_time);
@@ -34,8 +33,7 @@ char * get_cur_time()
     return now;
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     struct sockaddr_in6 client;
     int clientfd;
     char * client_addr = "::1";
@@ -51,10 +49,6 @@ int main(int argc, char *argv[])
         client_addr = argv[1];
         client_name = argv[2];
     }
-
-    // print log_in information
-    char * current_time = get_cur_time();     // get the current system time
-    printf("> user %s login from %s at %s", client_name, client_addr, current_time);
 
     // create a socket
     clientfd = socket(AF_INET6, SOCK_STREAM, 0);
@@ -85,12 +79,14 @@ int main(int argc, char *argv[])
     }
     printf("%s\n", buf_recv);
 
+    // print log_in information
+    char * current_time = get_cur_time();     // get the current system time
+    printf("> user %s login from %s at %s", client_name, client_addr, current_time);
+
     pid_t pid = fork();
     // pid > 0, SEND DATA; pid = 0, RECEIVE DATA
-    while (TRUE)
-    {
-        if (pid > 0)
-        {
+    while (TRUE) {
+        if (pid > 0) {
             signal(SIGUSR1, quit);
             // clear
             bzero(buf_read, MAXLINE);
@@ -105,9 +101,7 @@ int main(int argc, char *argv[])
                 perror("> wrong read from console.\n");
                 exit(EXIT_FAILURE);
             }
-        }
-        else if (pid == 0)
-        {
+        } else if (pid == 0) {
             // clear
             bzero(buf_recv, MAXLINE);
             // check recv_len
@@ -123,10 +117,8 @@ int main(int argc, char *argv[])
                 kill(getppid(), SIGUSR1);    // kill parent progress
                 break;
             }
-
             printf("%s\n", buf_recv);
         }
-
     }
 
     close(clientfd);

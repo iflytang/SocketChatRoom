@@ -16,6 +16,7 @@
 #include <sys/shm.h>
 #include <time.h>
 #include <arpa/inet.h>
+#include <unistd.h>
 
 #define PERM S_IRUSR | S_IWUSR
 #define SOCKET_PORT  2017
@@ -25,13 +26,11 @@
 
 // when interrupted, call this method
 void quit(int signal) {
-    printf("> Socket teardowns!\n");
     exit(EXIT_SUCCESS);
 }
 
 // get current time
-char * get_cur_time()
-{
+char * get_cur_time() {
     time_t current_time;
     current_time = time(&current_time);
     char * now = ctime(&current_time);
@@ -40,19 +39,16 @@ char * get_cur_time()
 }
 
 // create shared memory
-int create_shm()
-{
+int create_shm() {
     int shmid;
-    if ((shmid = shmget(IPC_PRIVATE, MAXLINE, PERM)) == -1)
-    {
+    if ((shmid = shmget(IPC_PRIVATE, MAXLINE, PERM)) == -1) {
         perror("> create shared memory error!");
         exit(EXIT_FAILURE);
     }
     return shmid;
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     int sockfd, clientfd; //file descriptor
     char buf[MAXLINE] = {0};
     char temp[MAXLINE] = {0};
@@ -151,10 +147,6 @@ int main(int argc, char *argv[])
                     if(recv_len <= 0) {
                         perror("> wrong receive from socket.\n");
                         break;
-//                        close(clientfd);
-//                        kill(ppid, SIGUSR1);  // kill its child process, permit read data from SM to send
-//                        kill(getppid(), SIGUSR1); // kill its father process, permit send data to SM to write
-//                        exit(EXIT_FAILURE);
                     }
 
                     // get shared memory id
@@ -172,16 +164,15 @@ int main(int argc, char *argv[])
                 } else if (ppid == 0) {
                     // kill the child progress, permit SEND
                     signal(SIGUSR1, quit);
-                    sleep(1);
+                    usleep(5 * 1000);    // wait x us
                     read_addr = shmat(shmid, 0, 0);
 
                     // check temp in order not to send multiple times
-                    if (strcmp(temp, read_addr) != 0)
-                    {
+                    if (strcmp(temp, read_addr) != 0) {
                         strcpy(temp, read_addr);
 
                         // send to all clients
-                        if (send(clientfd, read_addr, strlen(read_addr), 0) == -1) {
+                        if (send(clientfd, read_addr, strlen(read_addr), 0) < 0) {
                             perror("> socket closed by remote peer.\n");
                             break;
                         }
