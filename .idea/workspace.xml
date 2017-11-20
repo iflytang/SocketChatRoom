@@ -51,8 +51,8 @@
             <file leaf-file-name="Server.c" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/Server.c">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="500">
-                    <caret line="101" column="45" lean-forward="false" selection-start-line="101" selection-start-column="45" selection-end-line="101" selection-end-column="45" />
+                  <state relative-caret-position="660">
+                    <caret line="133" column="42" lean-forward="true" selection-start-line="133" selection-start-column="42" selection-end-line="133" selection-end-column="42" />
                     <folding>
                       <element signature="e#38#56#0" expanded="true" />
                     </folding>
@@ -81,8 +81,8 @@
       <file leaf-file-name="Server_v2.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Server_v2.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="113" column="5" lean-forward="false" selection-start-line="113" selection-start-column="5" selection-end-line="113" selection-end-column="5" />
+            <state relative-caret-position="325">
+              <caret line="134" column="17" lean-forward="false" selection-start-line="134" selection-start-column="17" selection-end-line="134" selection-end-column="17" />
               <folding>
                 <element signature="e#38#56#0" expanded="true" />
               </folding>
@@ -419,12 +419,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1511004949064</updated>
-      <workItem from="1511004950541" duration="34634000" />
+      <workItem from="1511004950541" duration="35756000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34634000" />
+    <option name="totallyTimeSpent" value="35756000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1440" y="58" width="1440" height="860" extended-state="0" />
@@ -574,8 +574,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="101" column="45" lean-forward="false" selection-start-line="101" selection-start-column="45" selection-end-line="101" selection-end-column="45" />
+        <state relative-caret-position="660">
+          <caret line="133" column="42" lean-forward="true" selection-start-line="133" selection-start-column="42" selection-end-line="133" selection-end-column="42" />
           <folding>
             <element signature="e#38#56#0" expanded="true" />
           </folding>
@@ -584,8 +584,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server_v2.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="113" column="5" lean-forward="false" selection-start-line="113" selection-start-column="5" selection-end-line="113" selection-end-column="5" />
+        <state relative-caret-position="325">
+          <caret line="134" column="17" lean-forward="false" selection-start-line="134" selection-start-column="17" selection-end-line="134" selection-end-column="17" />
           <folding>
             <element signature="e#38#56#0" expanded="true" />
           </folding>

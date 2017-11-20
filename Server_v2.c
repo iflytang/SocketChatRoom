@@ -21,6 +21,7 @@
 #define SOCKET_PORT  2017
 #define PENDING_QUEUE 15
 #define MAXLINE 1024
+#define TRUE 1
 #define WELCOME "|================ Chatting Room ===============|"
 
 
@@ -57,13 +58,10 @@ int main(int argc, char *argv[])
     int sockfd, clientfd; //file descriptor
     int  recvbytes;
     char buf[MAXLINE] = {0};
-    char * read_addr, * write_addr;
     char temp[MAXLINE] = {0};
     struct  sockaddr_in6 server, client;
     char * server_addr = "::1"; // server's default ipv6 address
     char * server_name = "tang"; // server's name when in communication
-
-    pid_t pid, ppid;
 
     // create shared memory
     int shmid;
@@ -110,23 +108,34 @@ int main(int argc, char *argv[])
     }
     printf("listening...\n|================ Chatting room monitor ===============|\n");
 
-    while (1)
+    char * read_addr, * write_addr;
+    pid_t pid, ppid;
+    int online_people = 0;     // indicate how many people online
+    while (TRUE)
     {
-        //接受一个客户端的连接请求
+        // accept a client socket
         socklen_t client_len = sizeof(struct sockaddr);
-        if ((clientfd = accept(sockfd, (struct sockaddr *)&client, &client_len)) == -1)
-        {
-            perror("fail to accept");
-            exit(1);
+        clientfd = accept(sockfd, (struct sockaddr *) &client, &client_len);
+        if(clientfd < 0) {
+            perror("make_tcp_connection:: accept");
+            exit(EXIT_FAILURE);
         }
 
-        //得到客户端的IP地址输出
-        char address[20];
-        inet_ntop(AF_INET, &client.sin6_addr, address, sizeof(address));
+        // display online people on monitor
+        printf("online numbers: %d\n", ++online_people);
+        char online[255] = "online ID: ";
+        char str[255] = {0};
+        sprintf(str, "%d", online_people);   // convert online_people into chars
+        strcat(online, str);
 
-        printf("accept from %s\n", address);
-        send(clientfd, WELCOME, strlen(WELCOME), 0); //发送问候信息
-//        buf = (char *)malloc(255);
+        // send WELCOME and online ID to client
+        send(clientfd, WELCOME, strlen(WELCOME), 0);
+        send(clientfd, online, strlen(online), 0);
+
+        // clear
+        bzero(online, strlen(online));
+        strcpy(online, "online ID: ");
+        bzero(str, strlen(str));
 
         ppid = fork(); //创建子进程
         if (ppid == 0) //子进程
