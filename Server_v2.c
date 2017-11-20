@@ -27,7 +27,7 @@
 
 // when interrupted, call this method
 void quit(int signal) {
-    printf("Socket teardowns!\n");
+    printf("> Socket teardowns!\n");
     exit(EXIT_SUCCESS);
 }
 
@@ -47,7 +47,7 @@ int create_shm()
     int shmid;
     if ((shmid = shmget(IPC_PRIVATE, MAXLINE, PERM)) == -1)
     {
-        perror("create shared memory error!");
+        perror("> create shared memory error!");
         exit(EXIT_FAILURE);
     }
     return shmid;
@@ -56,7 +56,6 @@ int create_shm()
 int main(int argc, char *argv[])
 {
     int sockfd, clientfd; //file descriptor
-    int  recvbytes;
     char buf[MAXLINE] = {0};
     char temp[MAXLINE] = {0};
     struct  sockaddr_in6 server, client;
@@ -69,21 +68,24 @@ int main(int argc, char *argv[])
 
     // read the server_addr and server_name from **agrv
     if (argc != 3) {
-        perror("wrong input!\nusage:\n\t./x.o <IPv6 Address> <String name>\n");
+        perror("> wrong input!\nusage:\n\t./x.o <IPv6 Address> <String name>\n");
         exit(EXIT_FAILURE);
     } else {
         server_addr = argv[1];
         server_name = argv[2];
     }
 
+    // display Chatting room monitor information
+    printf("|=============== Chatting room monitor ===============|\n");
+
     // print log_in information
     char * current_time = get_cur_time();     // get the current system time
-    printf("monitor %s login from %s at %s", server_name, server_addr, current_time);
+    printf("> monitor %s login from %s at %s", server_name, server_addr, current_time);
 
     // create and check a server socket
     sockfd = socket(AF_INET6, SOCK_STREAM, 0);
     if(sockfd < 0) {
-        perror("make_tcp_connection:: socket");
+        perror("> make_tcp_connection:: socket");
         exit(EXIT_FAILURE);
     }
 
@@ -96,17 +98,17 @@ int main(int argc, char *argv[])
     // bind socket
     int bind_socket = bind(sockfd, (struct sockaddr *) &server, sizeof(server));
     if(bind_socket < 0) {
-        perror("make_tcp_connection:: bind");
+        perror("> make_tcp_connection:: bind");
         exit(EXIT_FAILURE);
     }
 
     // listen socket
     int listen_socket = listen(sockfd, PENDING_QUEUE);  // making it as server socket
     if(listen_socket < 0) {
-        perror("make_tcp_connection:: listen");
+        perror("> make_tcp_connection:: listen");
         exit(EXIT_FAILURE);
     }
-    printf("listening...\n|================ Chatting room monitor ===============|\n");
+    printf("> listening...\n");
 
     char * read_addr, * write_addr;
     pid_t pid, ppid;
@@ -117,12 +119,12 @@ int main(int argc, char *argv[])
         socklen_t client_len = sizeof(struct sockaddr);
         clientfd = accept(sockfd, (struct sockaddr *) &client, &client_len);
         if(clientfd < 0) {
-            perror("make_tcp_connection:: accept");
+            perror("> make_tcp_connection:: accept");
             exit(EXIT_FAILURE);
         }
 
         // display online people on monitor
-        printf("online numbers: %d\n", ++online_people);
+        printf("> accepted. online numbers: %d\n", ++online_people);
         char online[255] = "online ID: ";
         char str[255] = {0};
         sprintf(str, "%d", online_people);   // convert online_people into chars
@@ -137,25 +139,27 @@ int main(int argc, char *argv[])
         strcpy(online, "online ID: ");
         bzero(str, strlen(str));
 
-        ppid = fork(); //创建子进程
-        if (ppid == 0) //子进程
-        {
-            pid = fork(); //子进程创建子进程
-            while (1)
+        pid = fork(); // create a new child progress with return value ZERO
+        // pid == 0, RECEIVE DATA and WRITE (ppid > 0) to SM, then SEND (ppid == 0) to all client
+        if (pid == 0) {
+            ppid = fork();  // create new child progress of pid
+            while (TRUE)
             {
-                if (pid > 0)
+                if (ppid > 0)
                 {
-                    //buf = (char *)malloc(255);
-                    //父进程用于接收信息
-                    memset(buf, 0, 255);
-                    printf("OK\n");
-                    if ((recvbytes = recv(clientfd, buf, 255, 0)) <= 0)
-                    {
-                        perror("fail to recv");
+                    // clear buf
+                    bzero(buf, MAXLINE);
+
+                    // receive data
+                    int recv_len = read(clientfd, buf, MAXLINE);
+                    if(recv_len <= 0) {
+                        perror("> wrong receive from socket.\n");
                         close(clientfd);
-                        raise(SIGKILL);
-                        exit(1);
+                        kill(ppid, SIGUSR1);  // kill its child process, permit read data from SM to send
+                        kill(getppid(), SIGUSR1); // kill its father process, permit send data to SM to write
+                        exit(EXIT_FAILURE);
                     }
+
                     write_addr = shmat(shmid, 0, 0); //shmat将shmid所代表的全局的共享存储区关联到本进程的进程空间
                     memset(write_addr, '\0', 1024);
 
@@ -167,9 +171,10 @@ int main(int argc, char *argv[])
                     strcat(buf, now);
                     printf("%s\n", buf);
                 }
-                else if (pid == 0)
+                else if (ppid == 0)
                 {
                     //子进程用于发送消息
+                    signal(SIGUSR1, quit);
                     sleep(1); //子进程先等待父进程把接收到的信息存入共享存储区
                     read_addr = shmat(shmid, 0, 0); //读取共享存储区的内容
 
@@ -192,6 +197,9 @@ int main(int argc, char *argv[])
                 else
                     perror("fai to fork");
             }
+        } else {
+            // kill parent progress
+            signal(SIGUSR1, quit);
         }
     }
     printf("------------------------------------\n");
