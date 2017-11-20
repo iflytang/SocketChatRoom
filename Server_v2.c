@@ -180,15 +180,15 @@ int main(int argc, char *argv[])
                     {
                         strcpy(temp, read_addr);
 
-                        // if RECEIVE_DATA is "END"
-                        if(strstr(read_addr, "END") != NULL) {
-                            perror("> receive END.\n");
+                        // send to all clients
+                        if (send(clientfd, read_addr, strlen(read_addr), 0) == -1) {
+                            perror("> socket closed by remote peer.\n");
                             break;
                         }
 
-                        // send to all clients
-                        if (send(clientfd, read_addr, strlen(read_addr), 0) == -1) {
-                            perror("> wrong receive from socket.\n");
+                        // if RECEIVE_DATA is "END"
+                        if(strstr(read_addr, "END") != NULL) {
+                            perror("> socket closed by remote peer.\n");
                             break;
                         }
 
@@ -200,6 +200,7 @@ int main(int argc, char *argv[])
 
             // if break happens
             close(clientfd);
+            close(sockfd);
             kill(ppid, SIGUSR1);  // kill its child process, permit read data from SM to send
             kill(getppid(), SIGUSR1); // kill its father process, permit send data to SM to write
             exit(EXIT_FAILURE);
@@ -208,9 +209,6 @@ int main(int argc, char *argv[])
             signal(SIGUSR1, quit);
         }
     }
-    printf("------------------------------------\n");
-//    free(buf);
-    close(sockfd);
-    close(clientfd);
+
     return 0;
 }
