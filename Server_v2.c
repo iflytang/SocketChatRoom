@@ -48,7 +48,7 @@ int create_shm() {
     return shmid;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char **argv) {
     int sockfd, clientfd; //file descriptor
     char buf[MAXLINE] = {0};
     char temp[MAXLINE] = {0};

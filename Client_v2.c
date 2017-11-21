@@ -33,7 +33,7 @@ char * get_cur_time() {
     return now;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char **argv) {
     struct sockaddr_in6 client;
     int clientfd;
     char * client_addr = "::1";
