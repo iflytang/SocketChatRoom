@@ -3,5 +3,5 @@ project(ChatRoom)
 
 set(CMAKE_C_STANDARD 99)
 
-set(SOURCE_FILES Server.c Client.c Server_v2.c Client_v2.c)
+set(SOURCE_FILES Server_v2.c Client_v2.c)
 add_executable(ChatRoom ${SOURCE_FILES})
