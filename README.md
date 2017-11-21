@@ -18,7 +18,8 @@ Server RECEIVE data, Client SEND data.
 ```
 ## 2. Server.c & Client.c
 These two files implements dual direction communication.
-Both of Server and Client can SEND and RECEIVE data.
+Both of Server and Client can SEND and RECEIVE data. 
+Close session by entering "END" by any one.
 ```apple js
 ./x.out ::1
 ```
